@@ -24,7 +24,7 @@ from rdkit.Chem.EnumerateStereoisomers import EnumerateStereoisomers, StereoEnum
 RDLogger.DisableLog("rdApp.*")
 
 MODEL = st.secrets.get("GEMINI_MODEL", "gemini-2.5-flash")
-MAX_PER_SESSION = int(st.secrets.get("MAX_PER_SESSION", 15))
+MAX_PER_SESSION = int(st.secrets.get("MAX_PER_SESSION", 50))
 BENCH_MAX = int(st.secrets.get("BENCH_MAX", 30))
 
 APP_NAME = st.secrets.get("APP_NAME", "MolSnap")

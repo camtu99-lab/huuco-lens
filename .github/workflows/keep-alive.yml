@@ -1,0 +1,41 @@
+name: Keep Streamlit awake
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # chạy mỗi 6 giờ
+  workflow_dispatch:         # cho phép bấm chạy thử bằng tay
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cài Playwright
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Mở app và bấm nút đánh thức
+        run: |
+          cat > wake.py <<'EOF'
+          from playwright.sync_api import sync_playwright
+
+          URL = "https://huuco-lens-lcj9odvknn7ragyjezggt3.streamlit.app/"
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.goto(URL, timeout=60000)
+              try:
+                  page.get_by_text("Yes, get this app back up!").click(timeout=10000)
+                  print("Da bam nut danh thuc app")
+                  page.wait_for_timeout(30000)
+              except Exception:
+                  print("App dang thuc, khong can bam")
+                  page.wait_for_timeout(10000)
+              browser.close()
+          EOF
+          python wake.py

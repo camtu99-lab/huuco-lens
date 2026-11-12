@@ -6,14 +6,14 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#1b2150}
 #b{display:flex;align-items:center;gap:10px;border:1px solid #cfd6f5;background:#fff;color:#1b2150;border-radius:12px;padding:9px 16px;font-size:15px;font-weight:600;cursor:pointer}
 #b:hover{background:#eef1ff}
 #b.on{background:#fee2e2;border-color:#fca5a5}
-#dot{width:12px;height:12px;border-radius:50%;background:#6366f1}
-#b.on #dot{background:#ef4444;animation:p 1s infinite}
+#ic{width:20px;height:20px;color:#6366f1;flex:none}
+#b.on #ic{color:#ef4444;animation:p 1s infinite}
 @keyframes p{50%{transform:scale(1.5);opacity:.5}}
 #m{font-size:13px;color:#64748b}#m.err{color:#b42318}
-body.c{height:46px;display:flex;align-items:flex-end}body.c #m{display:none}body.c .row{gap:0;width:100%}
+body.c{height:46px;display:flex;align-items:flex-end}body.c #m{display:none}body.c #t{display:none}body.c.f #t{display:inline}body.c .row{gap:0;width:100%}
 body.c #b{width:100%;height:40px;box-sizing:border-box;justify-content:center;padding:0 10px;font-size:14px;border-radius:10px}
 </style></head><body>
-<div class="row"><button id="b" type="button"><span id="dot"></span><span id="t">Bấm để nói</span></button><span id="m">Nói xong tự dừng và chuyển thành chữ.</span></div>
+<div class="row"><button id="b" type="button" title="Bấm để nói" aria-label="Bấm để nói"><svg id="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/></svg><span id="t">Bấm để nói</span></button><span id="m">Nói xong tự dừng và chuyển thành chữ.</span></div>
 <script>
 // Giao thức thành phần Streamlit viết tay (không cần npm)
 function send(type, extra) { window.parent.postMessage(Object.assign({ isStreamlitMessage: true, type: "streamlit:" + type }, extra || {}), "*"); }
@@ -23,7 +23,7 @@ function applyMode() { document.body.classList.toggle("c", compact); if (!rec_on
 window.addEventListener("message", e => { const d = e.data || {}; if (d.type === "streamlit:render") { const c = !!(d.args && d.args.compact); if (c !== compact) { compact = c; applyMode(); } } });
 send("componentReady", { apiVersion: 1 }); send("setFrameHeight", { height: 56 });
 const $ = id => document.getElementById(id);
-const flash = t => { $("t").textContent = t; setTimeout(() => { if (!rec_on) $("t").textContent = lbl(); }, 2200); };
+const flash = t => { $("t").textContent = t; document.body.classList.add("f"); setTimeout(() => { document.body.classList.remove("f"); if (!rec_on) $("t").textContent = lbl(); }, 2200); };
 const say = (t, err) => { $("m").textContent = t; $("m").className = err ? "err" : ""; };
 let stream = null, rec = null, chunks = [], ctx = null, timer = null, rec_on = false, cancelled = false;
 

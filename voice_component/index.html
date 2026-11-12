@@ -6,12 +6,12 @@ body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#1b2150}
 #b{display:flex;align-items:center;gap:10px;border:1px solid #cfd6f5;background:#fff;color:#1b2150;border-radius:12px;padding:9px 16px;font-size:15px;font-weight:600;cursor:pointer}
 #b:hover{background:#eef1ff}
 #b.on{background:#fee2e2;border-color:#fca5a5}
-#dot{width:12px;height:12px;border-radius:50%;background:#6366f1}
-#b.on #dot{background:#ef4444;animation:p 1s infinite}
-@keyframes p{50%{transform:scale(1.5);opacity:.5}}
+#mic{width:20px;height:20px;color:#4f46e5;flex:none}
+#b.on #mic{color:#ef4444;animation:p 1s infinite}
+@keyframes p{50%{transform:scale(1.25);opacity:.55}}
 #m{font-size:13px;color:#64748b}#m.err{color:#b42318}
 </style></head><body>
-<div class="row"><button id="b" type="button"><span id="dot"></span><span id="t">Bấm để nói</span></button><span id="m">Nói xong tự dừng và chuyển thành chữ.</span></div>
+<div class="row"><button id="b" type="button"><svg id="mic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 14a3.5 3.5 0 0 0 3.5-3.5v-5a3.5 3.5 0 0 0-7 0v5A3.5 3.5 0 0 0 12 14z"/><path d="M6 10.5a1 1 0 0 0-2 0 8 8 0 0 0 7 7.94V21H8.5a1 1 0 0 0 0 2h7a1 1 0 0 0 0-2H13v-2.56a8 8 0 0 0 7-7.94 1 1 0 0 0-2 0 6 6 0 0 1-12 0z"/></svg><span id="t">Bấm để nói</span></button><span id="m">Nói xong tự dừng và chuyển thành chữ.</span></div>
 <script>
 // Giao thức thành phần Streamlit viết tay (không cần npm)
 function send(type, extra) { window.parent.postMessage(Object.assign({ isStreamlitMessage: true, type: "streamlit:" + type }, extra || {}), "*"); }
